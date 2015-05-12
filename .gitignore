@@ -1,2 +1,7 @@
 /.paket
 /*.suo
+/MyApplication/Scripts/*
+/MyApplication/Content/*
+/MyApplication/bin/*
+/MyApplication/obj/*
+/packages/*
