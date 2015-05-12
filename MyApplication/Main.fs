@@ -4,14 +4,13 @@ open WebSharper
 open WebSharper.Sitelets
 
 type Action =
-    | Home
-    | About
+    | [<CompiledName "">] Home
+    | [<CompiledName "about">] About
 
 module Server =
     [<Rpc>]
     let DoSomething input =
-        let R (s: string) =
-            System.String(List.ofSeq s |> List.rev |> Array.ofList)
+        let R (s: string) = System.String(List.ofSeq s |> List.rev |> Array.ofList)
         async {
             return R input
         }
@@ -25,7 +24,7 @@ module Client =
         let output = H1 []
         Div [
             input
-            Button [Text "Click"]
+            Button [Text "Send"]
             |>! OnClick (fun _ _ ->
                 async {
                     let! data = Server.DoSomething input.Value
@@ -87,7 +86,7 @@ module Site =
         let Home =
             Skin.WithTemplate Action.Home "Home" <| fun ctx ->
                 [
-                    H1 [Text "Send text to Azure"]
+                    H1 [Text "Say Hi to Azure"]
                     Div [new Controls.EntryPoint()]
                 ]
 
@@ -95,15 +94,15 @@ module Site =
             Skin.WithTemplate Action.About "About" <| fun ctx ->
                 [
                     H1 [Text "About"]
-                    P [Text "This is a template for a WebSharper client-server application
+                    P [Text "This is a template WebSharper client-server application
                              that you can easily deploy to Azure from source control."]
                 ]
 
     let Main =
-        Sitelet.Sum [
-            Sitelet.Content "/" Action.Home Pages.Home
-            Sitelet.Content "/About" Action.About Pages.About
-        ]
+        Sitelet.Infer (function
+            | Action.Home -> Pages.Home
+            | Action.About -> Pages.About
+        )
 
 [<Sealed>]
 type Website() =
