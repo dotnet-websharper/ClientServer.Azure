@@ -37,14 +37,6 @@ module Client =
             Div [Class "jumbotron"] -< [output]
         ]
 
-module Controls =
-    [<Sealed>]
-    type EntryPoint() =
-        inherit Web.Control()
-
-        [<JavaScript>]
-        override __.Body = Client.Main() :> _
-
 open WebSharper.Html.Server
 
 module Skin =
@@ -87,7 +79,7 @@ module Site =
             Skin.WithTemplate Action.Home "Home" <| fun ctx ->
                 [
                     H1 [Text "Say Hi to Azure"]
-                    Div [new Controls.EntryPoint()]
+                    Div [ClientSide <@ Client.Main() @>]
                 ]
 
         let About =
