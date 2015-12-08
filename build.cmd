@@ -30,9 +30,11 @@ REM If we're not deploying to Azure (eg. building locally),
 REM we need to set MSBUILD_PATH.
 if "%MSBUILD_PATH%" == "" (
   set MSBUILD_PATH="%ProgramFiles(x86)%\MSBuild\12.0\Bin\MSBuild.exe"
+) else (
+  set MSBUILD_PATH="%MSBUILD_PATH%"
 )
 
-call %%MSBUILD_PATH%% /p:Configuration=Release
+%MSBUILD_PATH% /p:Configuration=Release
 
 if not %ERRORLEVEL% == 0 (
   echo ====== Build failed. ======
