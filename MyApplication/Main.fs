@@ -65,13 +65,12 @@ module Skin =
             LI ["About" => Action.About]
         ]
 
-    let WithTemplate action title body : Content<Action> =
-        Content.WithTemplate MainTemplate <| fun ctx ->
-            {
-                Title = title
-                Menubar = Menubar ctx action
-                Body = body ctx
-            }
+    let WithTemplate action title body ctx =
+        Content.WithTemplate MainTemplate {
+            Title = title
+            Menubar = Menubar ctx action
+            Body = body ctx
+        }
 
 module Site =
     module Pages =
@@ -90,17 +89,10 @@ module Site =
                              that you can easily deploy to Azure from source control."]
                 ]
 
+    [<Website>]
     let Main =
-        Sitelet.Infer (function
-            | Action.Home -> Pages.Home
-            | Action.About -> Pages.About
+        Sitelet.Infer (fun ctx endpoint ->
+            match endpoint with
+            | Action.Home -> Pages.Home ctx
+            | Action.About -> Pages.About ctx
         )
-
-[<Sealed>]
-type Website() =
-    interface IWebsite<Action> with
-        member this.Sitelet = Site.Main
-        member this.Actions = [Action.Home; Action.About]
-
-[<assembly: Website(typeof<Website>)>]
-do ()
