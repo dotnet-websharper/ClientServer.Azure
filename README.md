@@ -4,6 +4,8 @@ A template for deploying a WebSharper client-server application to Azure from so
 
 [![Deploy to Azure](http://azuredeploy.net/deploybutton.png)](https://azuredeploy.net/?repository=https://github.com/intellifactory/ClientServer.Azure)
 
+The template uses Paket instead of Nuget, and you can build your project with build.cmd (you will need [curl](http://curl.haxx.se/) installed and on your path). Run build.cmd before opening in Visual Studio as well.
+
 # Steps
 
  0. Create an Azure account at http://azure.microsoft.com if you don't have one.
