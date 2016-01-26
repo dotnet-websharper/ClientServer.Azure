@@ -11,14 +11,14 @@ if not exist .paket (
 )
 
 if not exist .paket\paket.bootstrapper.exe (
-    if not exist curl (
+    where /q curl
+    if not !ERRORLEVEL! == 0 (
         echo ====== Failed to find paket bootstrapper and curl was not available
         exit 1
     )
         
     curl https://github.com/fsprojects/Paket/releases/download/1.2.0/paket.bootstrapper.exe -L --insecure -o .paket\paket.bootstrapper.exe
 )
-
 
 if not exist .paket\paket.exe (
   .paket\paket.bootstrapper.exe
